@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PokemonDTO: Codable {
+struct PokemonDTO: Codable, PokemonRepresentable {
     let id: Int
     let name: String
     let height: Int
@@ -26,7 +26,7 @@ struct PokemonDTO: Codable {
     }
 }
 
-struct PokemonAbilityDTO: Codable {
+struct PokemonAbilityDTO: Codable, PokemonAbilityRepresentable {
     let ability: NamedAPIResourceDTO
     let isHidden: Bool
     let slot: Int

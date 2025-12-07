@@ -7,14 +7,16 @@
 
 import Foundation
 
-struct PokemonListRepresentable: Codable {
-    let count: Int
-    let next: String?
-    let previous: String?
-    let results: [PokemonEntryRepresentable]
+protocol PokemonListRepresentable {
+    associatedtype Entry: PokemonEntryRepresentable
+
+    var count: Int { get }
+    var next: String? { get }
+    var previous: String? { get }
+    var results: [Entry] { get }
 }
 
-struct PokemonEntryRepresentable: Codable {
-    let name: String
-    let url: String
+protocol PokemonEntryRepresentable {
+    var name: String { get }
+    var url: String { get }
 }

@@ -7,91 +7,75 @@
 
 import Foundation
 
-struct PokemonRepresentable: Codable {
-    let id: Int
-    let name: String
-    let height: Int
-    let weight: Int
-    let baseExperience: Int?
-    let abilities: [PokemonAbilityRepresentable]
-    let forms: [NamedAPIResourceRepresentable]
-    let stats: [PokemonStatRepresentable]
-    let types: [PokemonTypeRepresentable]
-    let sprites: PokemonSpritesRepresentable
-    let moves: [PokemonMoveRepresentable]
+protocol PokemonRepresentable: Codable {
+    associatedtype Abilities: PokemonAbilityRepresentable
+    associatedtype Forms: NamedAPIResourceRepresentable
+    associatedtype Stats: PokemonStatRepresentable
+    associatedtype Types: PokemonTypeRepresentable
+    associatedtype Sprites: PokemonSpritesRepresentable
+    associatedtype Moves: PokemonMoveRepresentable
 
-    enum CodingKeys: String, CodingKey {
-        case id, name, height, weight, abilities, forms, stats, types, moves, sprites
-        case baseExperience = "base_experience"
-    }
+    var  id: Int { get }
+    var name: String { get }
+    var height: Int { get }
+    var weight: Int { get }
+    var baseExperience: Int? { get }
+    var abilities: [Abilities] { get }
+    var forms: [Forms] { get }
+    var stats: [Stats] { get }
+    var types: [Types] { get }
+    var sprites: Sprites { get }
+    var moves: [Moves] { get }
 }
 
-struct PokemonAbilityRepresentable: Codable {
-    let ability: NamedAPIResourceRepresentable
-    let isHidden: Bool
-    let slot: Int
-
-    enum CodingKeys: String, CodingKey {
-        case ability
-        case isHidden = "is_hidden"
-        case slot
-    }
+protocol PokemonAbilityRepresentable: Codable {
+    associatedtype Ability: NamedAPIResourceRepresentable
+    
+    var ability: Ability { get }
+    var isHidden: Bool { get }
+    var slot: Int { get }
 }
 
-struct PokemonStatRepresentable: Codable {
-    let baseStat: Int
-    let effort: Int
-    let stat: NamedAPIResourceRepresentable
-
-    enum CodingKeys: String, CodingKey {
-        case baseStat = "base_stat"
-        case effort
-        case stat
-    }
+protocol PokemonStatRepresentable: Codable {
+    associatedtype Stat: NamedAPIResourceRepresentable
+    
+    var baseStat: Int { get }
+    var effort: Int { get }
+    var stat: Stat { get }
 }
 
-struct PokemonTypeRepresentable: Codable {
-    let slot: Int
-    let type: NamedAPIResourceRepresentable
+protocol PokemonTypeRepresentable: Codable {
+    associatedtype Types: NamedAPIResourceRepresentable
+    
+    var slot: Int { get }
+    var type: Types { get }
 }
 
-struct PokemonMoveRepresentable: Codable {
-    let move: NamedAPIResourceRepresentable
-    let versionGroupDetails: [MoveVersionGroupDetailRepresentable]
-
-    enum CodingKeys: String, CodingKey {
-        case move
-        case versionGroupDetails = "version_group_details"
-    }
+protocol PokemonMoveRepresentable: Codable {
+    associatedtype Move: NamedAPIResourceRepresentable
+    associatedtype VersionGroupDetails: MoveVersionGroupDetailRepresentable
+    
+    var move: NamedAPIResourceRepresentable { get }
+    var versionGroupDetails: [VersionGroupDetails] { get }
 }
 
-struct MoveVersionGroupDetailRepresentable: Codable {
-    let levelLearnedAt: Int
-    let versionGroup: NamedAPIResourceRepresentable
-    let moveLearnMethod: NamedAPIResourceRepresentable
-
-    enum CodingKeys: String, CodingKey {
-        case levelLearnedAt = "level_learned_at"
-        case versionGroup = "version_group"
-        case moveLearnMethod = "move_learn_method"
-    }
+protocol MoveVersionGroupDetailRepresentable: Codable {
+    associatedtype VersionGroup: NamedAPIResourceRepresentable
+    associatedtype MoveLearnMethod: NamedAPIResourceRepresentable
+    
+    var levelLearnedAt: Int { get }
+    var versionGroup: VersionGroup { get }
+    var moveLearnMethod: MoveLearnMethod { get }
 }
 
-struct NamedAPIResourceRepresentable: Codable {
-    let name: String
-    let url: String
+protocol NamedAPIResourceRepresentable: Codable {
+    var name: String { get }
+    var url: String { get }
 }
 
-struct PokemonSpritesRepresentable: Codable {
-    let frontDefault: String?
-    let backDefault: String?
-    let frontShiny: String?
-    let backShiny: String?
-
-    enum CodingKeys: String, CodingKey {
-        case frontDefault = "front_default"
-        case backDefault = "back_default"
-        case frontShiny = "front_shiny"
-        case backShiny = "back_shiny"
-    }
+protocol PokemonSpritesRepresentable: Codable {
+    var frontDefault: String? { get }
+    var backDefault: String? { get }
+    var frontShiny: String? { get }
+    var backShiny: String? { get }
 }
