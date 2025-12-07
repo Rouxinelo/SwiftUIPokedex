@@ -38,7 +38,7 @@ struct PokemonAbilityDTO: Codable, PokemonAbilityRepresentable {
     }
 }
 
-struct PokemonStatDTO: Codable {
+struct PokemonStatDTO: Codable, PokemonStatRepresentable {
     let baseStat: Int
     let effort: Int
     let stat: NamedAPIResourceDTO
@@ -50,12 +50,12 @@ struct PokemonStatDTO: Codable {
     }
 }
 
-struct PokemonTypeDTO: Codable {
+struct PokemonTypeDTO: Codable, PokemonTypeRepresentable {
     let slot: Int
     let type: NamedAPIResourceDTO
 }
 
-struct PokemonMoveDTO: Codable {
+struct PokemonMoveDTO: Codable, PokemonMoveRepresentable {
     let move: NamedAPIResourceDTO
     let versionGroupDetails: [MoveVersionGroupDetailDTO]
 
@@ -65,7 +65,7 @@ struct PokemonMoveDTO: Codable {
     }
 }
 
-struct MoveVersionGroupDetailDTO: Codable {
+struct MoveVersionGroupDetailDTO: Codable, MoveVersionGroupDetailRepresentable {
     let levelLearnedAt: Int
     let versionGroup: NamedAPIResourceDTO
     let moveLearnMethod: NamedAPIResourceDTO
@@ -77,12 +77,12 @@ struct MoveVersionGroupDetailDTO: Codable {
     }
 }
 
-struct NamedAPIResourceDTO: Codable {
+struct NamedAPIResourceDTO: Codable, NamedAPIResourceRepresentable {
     let name: String
     let url: String
 }
 
-struct PokemonSpritesDTO: Codable {
+struct PokemonSpritesDTO: Codable, PokemonSpritesRepresentable {
     let frontDefault: String?
     let backDefault: String?
     let frontShiny: String?
