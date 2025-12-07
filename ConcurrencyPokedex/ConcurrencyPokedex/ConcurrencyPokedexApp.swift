@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct ConcurrencyPokedexApp: App {
+    var appDependencies = AppDependencies(networkProvider: NetworkProvider())
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            PokedexView(viewModel: PokedexViewModel(getPokemonListUseCase: appDependencies.getPokemonListUseCase,
+                                                    getPokemonUseCase: appDependencies.getPokemonUseCase))
         }
     }
 }

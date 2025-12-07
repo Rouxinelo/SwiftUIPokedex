@@ -8,7 +8,7 @@
 import Foundation
 
 protocol GetPokemonUseCaseProtocol {
-    func perform(id: Int) async throws -> any PokemonRepresentable
+    func perform(id: String) async throws -> any PokemonRepresentable
 }
 
 class GetPokemonUseCase: GetPokemonUseCaseProtocol {
@@ -18,7 +18,7 @@ class GetPokemonUseCase: GetPokemonUseCaseProtocol {
         self.dataSource = dataSource
     }
     
-    func perform(id: Int) async throws -> any PokemonRepresentable {
+    func perform(id: String) async throws -> any PokemonRepresentable {
         try await dataSource.getPokemon(id: id)
     }
 }

@@ -55,7 +55,7 @@ protocol PokemonMoveRepresentable: Codable {
     associatedtype Move: NamedAPIResourceRepresentable
     associatedtype VersionGroupDetails: MoveVersionGroupDetailRepresentable
     
-    var move: NamedAPIResourceRepresentable { get }
+    var move: Move { get }
     var versionGroupDetails: [VersionGroupDetails] { get }
 }
 
