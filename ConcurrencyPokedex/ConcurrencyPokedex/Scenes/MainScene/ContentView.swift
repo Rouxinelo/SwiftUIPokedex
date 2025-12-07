@@ -16,8 +16,6 @@ struct ContentView: View {
             Text("Hello, world!")
         }
         .padding()
-        .onAppear(perform: { print("test is working")
-        })
     }
 }
 
