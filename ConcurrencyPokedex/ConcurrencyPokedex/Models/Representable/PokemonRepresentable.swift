@@ -14,8 +14,8 @@ protocol PokemonRepresentable: Codable {
     associatedtype Types: PokemonTypeRepresentable
     associatedtype Sprites: PokemonSpritesRepresentable
     associatedtype Moves: PokemonMoveRepresentable
-
-    var  id: Int { get }
+    
+    var id: Int { get }
     var name: String { get }
     var height: Int { get }
     var weight: Int { get }
