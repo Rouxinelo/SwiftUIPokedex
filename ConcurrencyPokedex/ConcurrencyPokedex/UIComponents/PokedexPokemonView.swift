@@ -11,11 +11,11 @@ struct PokedexPokemonView: View {
     enum Constants {
         static let placeholder = "pokeball"
     }
-    var number: Int
-    var name: String
-    var firstType: String
-    var secondType: String?
-    var imageURL: String
+    var pokemon: PokedexPokemonItem
+    
+    init(pokemon: PokedexPokemonItem) {
+        self.pokemon = pokemon
+    }
     
     var body: some View {
         VStack {
@@ -29,7 +29,7 @@ struct PokedexPokemonView: View {
                                 Circle()
                                     .fill(.white.opacity(0.1))
                                     .frame(width: 90, height: 90)
-                                AsyncImage(url: URL(string: imageURL)) { phase in
+                                AsyncImage(url: URL(string: pokemon.sprite)) { phase in
                                     switch phase {
                                     case .empty, .failure(_):
                                         getPlaceholderPokeball()
@@ -48,17 +48,17 @@ struct PokedexPokemonView: View {
                     }
                     VStack(alignment: .leading, spacing: 0) {
                         VStack(alignment: .leading) {
-                            Text(name)
+                            Text(pokemon.name)
                                 .font(.headline)
                                 .fontWeight(.bold)
-                            Text(getIdString(id: number))
+                            Text(getIdString(id: pokemon.id))
                         }
                         HStack {
                             VStack {
                                 Spacer()
                                 VStack(alignment: .leading, spacing: 5) {
-                                    getTypeCell(text: firstType)
-                                    if let secondType = secondType {
+                                    getTypeCell(text: pokemon.firstType)
+                                    if let secondType = pokemon.secondType {
                                         getTypeCell(text: secondType)
                                     }
                                 }
@@ -76,7 +76,7 @@ struct PokedexPokemonView: View {
             .padding(.horizontal, 5)
         }
         .frame(width: getCellWidth(), height: 120)
-        .background(getBackgroundColor(for: PokemonType(rawValue: firstType)))
+        .background(getBackgroundColor(for: PokemonType(rawValue: pokemon.firstType)))
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .shadow(radius: 5)
         .padding(5)
@@ -112,19 +112,5 @@ struct PokedexPokemonView: View {
             .resizable()
             .scaledToFit()
             .frame(width: 50, height: 70)
-    }
-}
-
-#Preview {
-    HStack {
-        PokedexPokemonView(number: 9,
-                           name: "Blastoise",
-                           firstType: "water",
-                           imageURL: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/9.png")
-        PokedexPokemonView(number: 6,
-                           name: "Charizard",
-                           firstType: "fire",
-                           secondType: "flying",
-                           imageURL: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png")
     }
 }

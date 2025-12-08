@@ -9,8 +9,9 @@ import Foundation
 
 @MainActor
 class PokedexViewModel: ObservableObject {
-    @Published var pokemons = [any PokemonRepresentable]()
+    @Published var pokemonCellItems = [PokedexPokemonItem]()
     @Published var isLoading = false
+    private var pokemons = [any PokemonRepresentable]()
     private var offset = 0
     private var limit = 20
     private var shouldLoadNextPage = true
