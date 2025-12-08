@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct PokedexPokemonView: View {
+    enum Constants {
+        static let placeholder = "pokeball"
+    }
     var number: Int
     var name: String
     var firstType: String
@@ -22,20 +25,14 @@ struct PokedexPokemonView: View {
                         Spacer()
                         HStack {
                             Spacer()
-                            
                             ZStack {
                                 Circle()
                                     .fill(.white.opacity(0.1))
                                     .frame(width: 90, height: 90)
-                                
                                 AsyncImage(url: URL(string: imageURL)) { phase in
                                     switch phase {
                                     case .empty, .failure(_):
-                                        Image("pokeball")
-                                            .resizable()
-                                            .scaledToFit()
-                                            .frame(width: 50, height: 70)
-                                        
+                                        getPlaceholderPokeball()
                                     case .success(let image):
                                         image
                                             .aspectRatio(1, contentMode: .fit)
@@ -43,16 +40,12 @@ struct PokedexPokemonView: View {
                                             .scaledToFit()
                                             .background(Color.white.opacity(0.0))
                                     @unknown default:
-                                        Image("pokeball")
-                                            .resizable()
-                                            .scaledToFit()
-                                            .frame(width: 50, height: 70)
+                                        getPlaceholderPokeball()
                                     }
                                 }
                             }
                         }
                     }
-                    
                     VStack(alignment: .leading, spacing: 0) {
                         VStack(alignment: .leading) {
                             Text(name)
@@ -64,31 +57,17 @@ struct PokedexPokemonView: View {
                             VStack {
                                 Spacer()
                                 VStack(alignment: .leading, spacing: 5) {
-                                    Text(firstType.capitalized)
-                                        .padding(.vertical, 4)
-                                        .padding(.horizontal, 10)
-                                        .frame(width: 65)
-                                        .background(PokemonType(rawValue: firstType)?.displayColor ?? .gray)
-                                        .clipShape(Capsule())
-                                    
-
+                                    getTypeCell(text: firstType)
                                     if let secondType = secondType {
-                                        Text(secondType.capitalized)
-                                            .padding(.vertical, 4)
-                                            .padding(.horizontal, 10)
-                                            .frame(width: 65)
-                                            .background(PokemonType(rawValue: secondType)?.displayColor ?? .gray)
-                                            .clipShape(Capsule())
+                                        getTypeCell(text: secondType)
                                     }
                                 }
                                 .font(.footnote)
                                 .fontWeight(.bold)
                             }
-                            
                             Spacer()
                         }
                     }
-                    .foregroundStyle(.white)
                     .foregroundStyle(.white)
                     .font(.caption)
                 }
@@ -101,7 +80,6 @@ struct PokedexPokemonView: View {
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .shadow(radius: 5)
         .padding(5)
-        
     }
     
     func getIdString(id: Int) -> String {
@@ -115,6 +93,25 @@ struct PokedexPokemonView: View {
     func getBackgroundColor(for type: PokemonType?) -> Color {
         guard let type = type else { return .accentColor }
         return type.displayColor.opacity(0.7)
+    }
+    
+    @ViewBuilder
+    func getTypeCell(text: String) -> some View {
+        Text(text.capitalized)
+            .padding(.vertical, 4)
+            .padding(.horizontal, 10)
+            .frame(width: 65)
+            .background(PokemonType(rawValue: text)?.displayColor ?? .gray)
+            .clipShape(Capsule())
+            .shadow(radius: 2)
+    }
+    
+    @ViewBuilder
+    func getPlaceholderPokeball() -> some View {
+        Image(Constants.placeholder)
+            .resizable()
+            .scaledToFit()
+            .frame(width: 50, height: 70)
     }
 }
 
