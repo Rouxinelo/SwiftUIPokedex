@@ -17,35 +17,10 @@ struct PokedexPokemonView: View {
     var body: some View {
         VStack {
             HStack {
-                VStack(alignment: .leading, spacing: 0) {
-                    VStack(alignment: .leading) {
-                        Text(getIdString(id: number))
-                        Text(name)
-                            .font(.headline)
-                            .fontWeight(.bold)
-                    }
-                    HStack {
-                        VStack {
-                            Spacer()
-                            VStack(alignment: .leading, spacing: 5) {
-                                Text(firstType.capitalized)
-                                    .frame(width: 65)
-                                    .background(Color.secondary)
-                                    .clipShape(RoundedRectangle(cornerRadius: 20))
-                                if let secondType = secondType {
-                                    Text(secondType.capitalized)
-                                        .frame(width: 65)
-                                        .background(Color.secondary)
-                                        .clipShape(RoundedRectangle(cornerRadius: 20))
-                                }
-                            }
-                            .font(.footnote)
-                            .fontWeight(.bold)
-                        }
-                        
+                ZStack {
+                    VStack {
                         Spacer()
-
-                        VStack {
+                        HStack {
                             Spacer()
                             AsyncImage(url: URL(string: imageURL)) { phase in
                                 switch phase {
@@ -54,7 +29,7 @@ struct PokedexPokemonView: View {
                                         .resizable()
                                         .scaledToFit()
                                         .frame(width: 50, height: 70)
-
+                                    
                                 case .success(let image):
                                     image
                                         .aspectRatio(1, contentMode: .fit)
@@ -70,10 +45,40 @@ struct PokedexPokemonView: View {
                             }
                         }
                     }
+                    
+                    VStack(alignment: .leading, spacing: 0) {
+                        VStack(alignment: .leading) {
+                            Text(name)
+                                .font(.headline)
+                                .fontWeight(.bold)
+                            Text(getIdString(id: number))
+                        }
+                        HStack {
+                            VStack {
+                                Spacer()
+                                VStack(alignment: .leading, spacing: 5) {
+                                    Text(firstType.capitalized)
+                                        .frame(width: 65)
+                                        .background(Color.secondary)
+                                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                                    if let secondType = secondType {
+                                        Text(secondType.capitalized)
+                                            .frame(width: 65)
+                                            .background(Color.secondary)
+                                            .clipShape(RoundedRectangle(cornerRadius: 20))
+                                    }
+                                }
+                                .font(.footnote)
+                                .fontWeight(.bold)
+                            }
+                            
+                            Spacer()
+                        }
+                    }
+                    .foregroundStyle(.white)
+                    .foregroundStyle(.white)
+                    .font(.caption)
                 }
-                .foregroundStyle(.white)
-                .foregroundStyle(.white)
-                .font(.caption)
             }
             .padding(.vertical, 10)
             .padding(.horizontal, 5)
@@ -104,7 +109,7 @@ struct PokedexPokemonView: View {
         PokedexPokemonView(number: 9,
                            name: "Blastoise",
                            firstType: "water",
-                           imageURL: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/qq9.png")
+                           imageURL: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/9.png")
         PokedexPokemonView(number: 6,
                            name: "Charizard",
                            firstType: "fire",
