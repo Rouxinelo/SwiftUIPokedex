@@ -53,7 +53,7 @@ struct PokedexPokemonView: View {
                                     Image("pokeball")
                                         .resizable()
                                         .scaledToFit()
-                                        .frame(width: 70, height: 70)
+                                        .frame(width: 50, height: 70)
 
                                 case .success(let image):
                                     image
@@ -62,10 +62,10 @@ struct PokedexPokemonView: View {
                                         .scaledToFit()
                                         .background(Color.white.opacity(0.0))
                                 @unknown default:
-                                    Image("poke ball")
+                                    Image("pokeball")
                                         .resizable()
                                         .scaledToFit()
-                                        .frame(width: 50, height: 50)
+                                        .frame(width: 50, height: 70)
                                 }
                             }
                         }
@@ -104,7 +104,7 @@ struct PokedexPokemonView: View {
         PokedexPokemonView(number: 9,
                            name: "Blastoise",
                            firstType: "water",
-                           imageURL: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/9.png")
+                           imageURL: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/qq9.png")
         PokedexPokemonView(number: 6,
                            name: "Charizard",
                            firstType: "fire",
