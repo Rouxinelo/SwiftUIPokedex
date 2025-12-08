@@ -28,13 +28,13 @@ struct PokedexPokemonView: View {
                         VStack {
                             Spacer()
                             VStack(alignment: .leading, spacing: 5) {
-                                Text(firstType)
-                                    .frame(width: 50)
+                                Text(firstType.capitalized)
+                                    .frame(width: 65)
                                     .background(Color.secondary)
                                     .clipShape(RoundedRectangle(cornerRadius: 20))
                                 if let secondType = secondType {
-                                    Text(secondType)
-                                        .frame(width: 50)
+                                    Text(secondType.capitalized)
+                                        .frame(width: 65)
                                         .background(Color.secondary)
                                         .clipShape(RoundedRectangle(cornerRadius: 20))
                                 }
@@ -57,9 +57,10 @@ struct PokedexPokemonView: View {
 
                                 case .success(let image):
                                     image
-                                        .resizable()
-                                        .scaledToFill()
-                                        .frame(width: 80, height: 50)
+                                        .aspectRatio(1, contentMode: .fit)
+                                        .frame(width: 70, height: 70)
+                                        .scaledToFit()
+                                        .background(Color.white.opacity(0.0))
                                 @unknown default:
                                     Image("poke ball")
                                         .resizable()
@@ -75,11 +76,10 @@ struct PokedexPokemonView: View {
                 .font(.caption)
             }
             .padding(.vertical, 10)
-            .padding(.leading, 15)
-            .padding(.trailing, 5)
+            .padding(.horizontal, 5)
         }
         .frame(width: getCellWidth(), height: 120)
-        .background(Color.red.opacity(0.7))
+        .background(getBackgroundColor(for: PokemonType(rawValue: firstType)))
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .shadow(radius: 5)
         .padding(5)
@@ -92,19 +92,23 @@ struct PokedexPokemonView: View {
     func getCellWidth() -> CGFloat {
         UIScreen.main.bounds.width / 2 - 15
     }
+    
+    func getBackgroundColor(for type: PokemonType?) -> Color {
+        guard let type = type else { return .accentColor }
+        return type.displayColor.opacity(0.7)
+    }
 }
 
 #Preview {
     HStack {
-        PokedexPokemonView(number: 111,
-                           name: "Crabominable",
-                           firstType: "Fire",
-                           secondType: "Water",
-                           imageURL: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3wd21.png")
-        PokedexPokemonView(number: 1,
-                           name: "Name",
-                           firstType: "Fire",
-                           secondType: "Water",
-                           imageURL: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/30.png")
+        PokedexPokemonView(number: 9,
+                           name: "Blastoise",
+                           firstType: "water",
+                           imageURL: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/9.png")
+        PokedexPokemonView(number: 6,
+                           name: "Charizard",
+                           firstType: "fire",
+                           secondType: "flying",
+                           imageURL: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png")
     }
 }
