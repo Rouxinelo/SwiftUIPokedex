@@ -11,9 +11,9 @@ struct PokedexPokemonView: View {
     enum Constants {
         static let placeholder = "pokeball"
     }
-    var pokemon: PokedexPokemonItem
+    var pokemon: any PokemonRepresentable
     
-    init(pokemon: PokedexPokemonItem) {
+    init(pokemon: any PokemonRepresentable) {
         self.pokemon = pokemon
     }
     
@@ -29,7 +29,7 @@ struct PokedexPokemonView: View {
                                 Circle()
                                     .fill(.white.opacity(0.1))
                                     .frame(width: 90, height: 90)
-                                AsyncImage(url: URL(string: pokemon.sprite)) { phase in
+                                AsyncImage(url: URL(string: pokemon.sprites.frontDefault ?? "")) { phase in
                                     switch phase {
                                     case .empty, .failure(_):
                                         getPlaceholderPokeball()
@@ -57,8 +57,8 @@ struct PokedexPokemonView: View {
                             VStack {
                                 Spacer()
                                 VStack(alignment: .leading, spacing: 5) {
-                                    getTypeCell(text: pokemon.firstType)
-                                    if let secondType = pokemon.secondType {
+                                    getTypeCell(text: pokemon.types.first?.type.name ?? "")
+                                    if pokemon.types.count > 1, let secondType = pokemon.types.last?.type.name {
                                         getTypeCell(text: secondType)
                                     }
                                 }
@@ -76,7 +76,7 @@ struct PokedexPokemonView: View {
             .padding(.horizontal, 5)
         }
         .frame(width: getCellWidth(), height: 120)
-        .background(getBackgroundColor(for: PokemonType(rawValue: pokemon.firstType)))
+        .background(getBackgroundColor(for: PokemonType(rawValue: pokemon.types.first?.type.name ?? "")))
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .shadow(radius: 5)
         .padding(5)
@@ -100,7 +100,7 @@ struct PokedexPokemonView: View {
         Text(text.capitalized)
             .padding(.vertical, 4)
             .padding(.horizontal, 10)
-            .frame(width: 65)
+            .frame(width: 70)
             .background(PokemonType(rawValue: text)?.displayColor ?? .gray)
             .clipShape(Capsule())
             .shadow(radius: 2)

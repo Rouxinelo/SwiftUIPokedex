@@ -22,15 +22,14 @@ struct PokedexView: View {
     var body: some View {
         ScrollView {
             LazyVGrid(columns: columns, spacing: 16) {
-                ForEach($viewModel.pokemonCellItems) { item in
-                    Text("Item \(item)")
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.blue.opacity(0.2))
-                        .cornerRadius(10)
+                ForEach(viewModel.pokemons, id: \.id) { item in
+                    PokedexPokemonView(pokemon: item)
                 }
             }
             .padding()
+        }
+        .task {
+            await viewModel.fetchPokemon()
         }
     }
 }
