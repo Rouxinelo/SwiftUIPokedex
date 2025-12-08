@@ -22,25 +22,32 @@ struct PokedexPokemonView: View {
                         Spacer()
                         HStack {
                             Spacer()
-                            AsyncImage(url: URL(string: imageURL)) { phase in
-                                switch phase {
-                                case .empty, .failure(_):
-                                    Image("pokeball")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 50, height: 70)
-                                    
-                                case .success(let image):
-                                    image
-                                        .aspectRatio(1, contentMode: .fit)
-                                        .frame(width: 70, height: 70)
-                                        .scaledToFit()
-                                        .background(Color.white.opacity(0.0))
-                                @unknown default:
-                                    Image("pokeball")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 50, height: 70)
+                            
+                            ZStack {
+                                Circle()
+                                    .fill(.white.opacity(0.1))
+                                    .frame(width: 90, height: 90)
+                                
+                                AsyncImage(url: URL(string: imageURL)) { phase in
+                                    switch phase {
+                                    case .empty, .failure(_):
+                                        Image("pokeball")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 50, height: 70)
+                                        
+                                    case .success(let image):
+                                        image
+                                            .aspectRatio(1, contentMode: .fit)
+                                            .frame(width: 70, height: 70)
+                                            .scaledToFit()
+                                            .background(Color.white.opacity(0.0))
+                                    @unknown default:
+                                        Image("pokeball")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 50, height: 70)
+                                    }
                                 }
                             }
                         }
@@ -58,14 +65,20 @@ struct PokedexPokemonView: View {
                                 Spacer()
                                 VStack(alignment: .leading, spacing: 5) {
                                     Text(firstType.capitalized)
+                                        .padding(.vertical, 4)
+                                        .padding(.horizontal, 10)
                                         .frame(width: 65)
-                                        .background(Color.secondary)
-                                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                                        .background(PokemonType(rawValue: firstType)?.displayColor ?? .gray)
+                                        .clipShape(Capsule())
+                                    
+
                                     if let secondType = secondType {
                                         Text(secondType.capitalized)
+                                            .padding(.vertical, 4)
+                                            .padding(.horizontal, 10)
                                             .frame(width: 65)
-                                            .background(Color.secondary)
-                                            .clipShape(RoundedRectangle(cornerRadius: 20))
+                                            .background(PokemonType(rawValue: secondType)?.displayColor ?? .gray)
+                                            .clipShape(Capsule())
                                     }
                                 }
                                 .font(.footnote)
@@ -88,6 +101,7 @@ struct PokedexPokemonView: View {
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .shadow(radius: 5)
         .padding(5)
+        
     }
     
     func getIdString(id: Int) -> String {
