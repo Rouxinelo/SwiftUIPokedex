@@ -19,10 +19,10 @@ struct PokedexView: View {
     var body: some View {
         ZStack {
             VStack(spacing: 10) {
-                getNavigationBar()
+                navigationBar
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 0) {
-                        ForEach(viewModel.pokemons, id: \.id) { item in
+                        ForEach(pokemons, id: \.id) { item in
                             PokedexPokemonView(pokemon: item)
                                 .onAppear { loadMoreIfNeeded(currentItem: item) }
                         }
@@ -39,25 +39,30 @@ struct PokedexView: View {
 }
 
 private extension PokedexView {
-    func getNavigationBar() -> NavigationBar {
+    var navigationBar: NavigationBar {
         NavigationBar(title: viewModel.screenType == .allPokemon ? "Pokédex" : "Favorites",
-                             buttons: getNavigationBarButtons())
+                      buttons: navigationBarButtons)
     }
     
-    func getNavigationBarButtons() -> [NavigationBarItem] {
+    var navigationBarButtons: [NavigationBarItem] {
+        let isFavorite = viewModel.screenType == .favorite
         var buttons = [NavigationBarItem(name: "Search",
                                          image: "magnifyingglass",
                                          action: { viewModel.didTapSearch() })]
-        if viewModel.screenType == .allPokemon {
-            buttons.append(NavigationBarItem(name: "Team",
-                                             image: "heart.fill",
-                                             action: { viewModel.switchScreenType() }))
-        } else {
-            buttons.append(NavigationBarItem(name: "All",
-                                             image: "heart",
-                                             action: { viewModel.switchScreenType() }))
-        }
+        
+        buttons.append(NavigationBarItem(name: isFavorite ? "Team" : "All",
+                                         image: isFavorite ? "heart.fill" : "heart",
+                                         action: { viewModel.switchScreenType() }))
         return buttons
+    }
+    
+    var pokemons: [any PokemonRepresentable] {
+        switch viewModel.screenType {
+        case .allPokemon:
+            return viewModel.pokemons
+        case .favorite:
+            return viewModel.favoritePokemons
+        }
     }
     
     func loadMoreIfNeeded(currentItem: any PokemonRepresentable) {
