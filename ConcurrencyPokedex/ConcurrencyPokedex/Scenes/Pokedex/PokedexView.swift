@@ -31,11 +31,11 @@ struct PokedexView: View {
                     }
                 }
                 .padding(10)
+                if viewModel.isLoading { TableLoadingView() }
             }
             .task { await viewModel.fetchPokemon() }
             
             if viewModel.isFirstLoading { FullScreenLoadingView() }
-            if viewModel.isLoading { }
         }
     }
     

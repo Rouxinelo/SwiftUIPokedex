@@ -62,7 +62,7 @@ struct PokedexPokemonView: View {
                                         getTypeCell(text: secondType)
                                     }
                                 }
-                                .font(.footnote)
+                                .font(.microFootNote)
                                 .fontWeight(.bold)
                             }
                             Spacer()
