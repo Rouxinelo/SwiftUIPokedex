@@ -9,6 +9,7 @@ import Foundation
 
 @MainActor
 class PokedexViewModel: ObservableObject {
+    @Published var isFirstLoading = true
     @Published var isLoading = false
     @Published var pokemons = [any PokemonRepresentable]()
     private var offset = 0
@@ -23,8 +24,8 @@ class PokedexViewModel: ObservableObject {
     }
     
     func fetchPokemon() async {
-        guard shouldLoadNextPage, !isLoading else { return }
-        isLoading = true
+        guard shouldLoadNextPage, (!isLoading || isFirstLoading) else { return }
+        isLoading = !isFirstLoading
         
         do {
             let pokemonList = try await getPokemonListUseCase.perform(limit: limit, offset: offset)
@@ -48,5 +49,6 @@ class PokedexViewModel: ObservableObject {
             
         }
         isLoading = false
+        isFirstLoading = false
     }
 }

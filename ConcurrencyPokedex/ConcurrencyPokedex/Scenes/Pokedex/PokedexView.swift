@@ -20,15 +20,28 @@ struct PokedexView: View {
     }
     
     var body: some View {
-        ScrollView {
-            LazyVGrid(columns: columns, spacing: 16) {
-                ForEach(viewModel.pokemons, id: \.id) { item in
-                    PokedexPokemonView(pokemon: item)
+        ZStack {
+            ScrollView {
+                LazyVGrid(columns: columns, spacing: 0) {
+                    ForEach(viewModel.pokemons, id: \.id) { item in
+                        PokedexPokemonView(pokemon: item)
+                            .onAppear {
+                                loadMoreIfNeeded(currentItem: item)
+                            }
+                    }
                 }
+                .padding(10)
             }
-            .padding()
+            .task { await viewModel.fetchPokemon() }
+            
+            if viewModel.isFirstLoading { FullScreenLoadingView() }
+            if viewModel.isLoading { }
         }
-        .task {
+    }
+    
+    private func loadMoreIfNeeded(currentItem: any PokemonRepresentable) {
+        guard !viewModel.isLoading, currentItem.id == viewModel.pokemons.last?.id else { return }
+        Task {
             await viewModel.fetchPokemon()
         }
     }
