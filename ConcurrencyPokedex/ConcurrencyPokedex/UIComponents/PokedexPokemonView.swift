@@ -48,7 +48,7 @@ struct PokedexPokemonView: View {
                     }
                     VStack(alignment: .leading, spacing: 0) {
                         VStack(alignment: .leading) {
-                            Text(pokemon.name)
+                            Text(pokemon.name.capitalized)
                                 .font(.headline)
                                 .fontWeight(.bold)
                             Text(getIdString(id: pokemon.id))
