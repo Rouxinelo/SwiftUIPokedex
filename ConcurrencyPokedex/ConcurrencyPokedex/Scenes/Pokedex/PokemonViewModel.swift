@@ -7,11 +7,19 @@
 
 import Foundation
 
+enum PokedexScreenType {
+    case allPokemon
+    case favorite
+}
+
 @MainActor
 class PokedexViewModel: ObservableObject {
+    @Published var screenType: PokedexScreenType = .allPokemon
     @Published var isFirstLoading = true
     @Published var isLoading = false
     @Published var pokemons = [any PokemonRepresentable]()
+    @Published var favoritePokemons = [any PokemonRepresentable]()
+    
     private var offset = 0
     private var limit = 20
     private var shouldLoadNextPage = true
@@ -50,5 +58,16 @@ class PokedexViewModel: ObservableObject {
         }
         isLoading = false
         isFirstLoading = false
+    }
+    
+    func didTapSearch() {}
+    
+    func switchScreenType() {
+        switch screenType {
+        case .allPokemon:
+            screenType = .favorite
+        case .favorite:
+            screenType = .allPokemon
+        }
     }
 }

@@ -11,6 +11,7 @@ struct PokedexPokemonView: View {
     enum Constants {
         static let placeholder = "pokeball"
     }
+    
     var pokemon: any PokemonRepresentable
     
     init(pokemon: any PokemonRepresentable) {

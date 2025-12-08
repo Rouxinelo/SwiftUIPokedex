@@ -31,6 +31,8 @@
 		6BD9192E2EE71BFF008E130F /* FullScreenLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD9192D2EE71BFF008E130F /* FullScreenLoadingView.swift */; };
 		6BD919302EE7303C008E130F /* TableLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD9192F2EE7303C008E130F /* TableLoadingView.swift */; };
 		6BD919332EE73232008E130F /* Font+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD919322EE73232008E130F /* Font+Extensions.swift */; };
+		6BD919372EE75A78008E130F /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD919362EE75A78008E130F /* NavigationBar.swift */; };
+		6BD919392EE774A3008E130F /* NavigationBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD919382EE774A3008E130F /* NavigationBarItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +80,8 @@
 		6BD9192D2EE71BFF008E130F /* FullScreenLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenLoadingView.swift; sourceTree = "<group>"; };
 		6BD9192F2EE7303C008E130F /* TableLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableLoadingView.swift; sourceTree = "<group>"; };
 		6BD919322EE73232008E130F /* Font+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Extensions.swift"; sourceTree = "<group>"; };
+		6BD919362EE75A78008E130F /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
+		6BD919382EE774A3008E130F /* NavigationBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +187,7 @@
 				6BB9FAB82EE62815008B7490 /* PokedexPokemonView.swift */,
 				6BD9192D2EE71BFF008E130F /* FullScreenLoadingView.swift */,
 				6BD9192F2EE7303C008E130F /* TableLoadingView.swift */,
+				6BD919362EE75A78008E130F /* NavigationBar.swift */,
 			);
 			path = UIComponents;
 			sourceTree = "<group>";
@@ -199,6 +204,7 @@
 			isa = PBXGroup;
 			children = (
 				6BCB24B12EE71292009964EC /* PokedexPokemonItem.swift */,
+				6BD919382EE774A3008E130F /* NavigationBarItem.swift */,
 			);
 			path = DataModels;
 			sourceTree = "<group>";
@@ -435,6 +441,8 @@
 				6BB9FAB62EE61A57008B7490 /* AppDependencies.swift in Sources */,
 				6BCB24B22EE71292009964EC /* PokedexPokemonItem.swift in Sources */,
 				6BB9FAB92EE62815008B7490 /* PokedexPokemonView.swift in Sources */,
+				6BD919372EE75A78008E130F /* NavigationBar.swift in Sources */,
+				6BD919392EE774A3008E130F /* NavigationBarItem.swift in Sources */,
 				6BD919332EE73232008E130F /* Font+Extensions.swift in Sources */,
 				6BCB24AF2EE6567C009964EC /* PokemonType.swift in Sources */,
 				6B7E80D82EE5D10A005A5925 /* NetworkProvider.swift in Sources */,

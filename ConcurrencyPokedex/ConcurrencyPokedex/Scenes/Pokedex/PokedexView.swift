@@ -10,11 +10,8 @@ import SwiftUI
 struct PokedexView: View {
     @StateObject var viewModel: PokedexViewModel
     
-    let columns = [
-        GridItem(.flexible()),
-        GridItem(.flexible())
-    ]
-
+    let columns = [ GridItem(.flexible()), GridItem(.flexible())]
+    
     init(viewModel: PokedexViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel)
     }
@@ -22,29 +19,12 @@ struct PokedexView: View {
     var body: some View {
         ZStack {
             VStack(spacing: 10) {
-                HStack(spacing: 10) {
-                    Image("navBarPokeball")
-                        .resizable()
-                        .frame(width: 24, height: 24)
-                    Text("Pokedex")
-                        .font(.title)
-                        .fontWeight(.bold)
-                    Spacer()
-                    Image(systemName: "magnifyingglass")
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                    Image(systemName: "heart")
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                }
-                .padding(.horizontal)
+                getNavigationBar()
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 0) {
                         ForEach(viewModel.pokemons, id: \.id) { item in
                             PokedexPokemonView(pokemon: item)
-                                .onAppear {
-                                    loadMoreIfNeeded(currentItem: item)
-                                }
+                                .onAppear { loadMoreIfNeeded(currentItem: item) }
                         }
                     }
                     .padding(10)
@@ -59,6 +39,27 @@ struct PokedexView: View {
 }
 
 private extension PokedexView {
+    func getNavigationBar() -> NavigationBar {
+        NavigationBar(title: viewModel.screenType == .allPokemon ? "Pokédex" : "Favorites",
+                             buttons: getNavigationBarButtons())
+    }
+    
+    func getNavigationBarButtons() -> [NavigationBarItem] {
+        var buttons = [NavigationBarItem(name: "Search",
+                                         image: "magnifyingglass",
+                                         action: { viewModel.didTapSearch() })]
+        if viewModel.screenType == .allPokemon {
+            buttons.append(NavigationBarItem(name: "Team",
+                                             image: "heart.fill",
+                                             action: { viewModel.switchScreenType() }))
+        } else {
+            buttons.append(NavigationBarItem(name: "All",
+                                             image: "heart",
+                                             action: { viewModel.switchScreenType() }))
+        }
+        return buttons
+    }
+    
     func loadMoreIfNeeded(currentItem: any PokemonRepresentable) {
         guard shouldReloadPokemon(currentItem: currentItem) else { return }
         Task {
