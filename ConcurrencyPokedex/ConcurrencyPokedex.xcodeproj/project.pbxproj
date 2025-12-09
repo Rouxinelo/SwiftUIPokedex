@@ -33,6 +33,7 @@
 		6BD919332EE73232008E130F /* Font+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD919322EE73232008E130F /* Font+Extensions.swift */; };
 		6BD919372EE75A78008E130F /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD919362EE75A78008E130F /* NavigationBar.swift */; };
 		6BD919392EE774A3008E130F /* NavigationBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD919382EE774A3008E130F /* NavigationBarItem.swift */; };
+		6BD9193F2EE79568008E130F /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD9193E2EE79568008E130F /* Router.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +83,7 @@
 		6BD919322EE73232008E130F /* Font+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Extensions.swift"; sourceTree = "<group>"; };
 		6BD919362EE75A78008E130F /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
 		6BD919382EE774A3008E130F /* NavigationBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarItem.swift; sourceTree = "<group>"; };
+		6BD9193E2EE79568008E130F /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -232,6 +234,7 @@
 		6BD625B52EE5CB58007D57E5 /* ConcurrencyPokedex */ = {
 			isa = PBXGroup;
 			children = (
+				6BD9193D2EE7955D008E130F /* Navigation */,
 				6BD919312EE73224008E130F /* Extensions */,
 				6BB9FAB72EE62804008B7490 /* UIComponents */,
 				6BB9FAB42EE61A2E008B7490 /* Dependencies */,
@@ -294,6 +297,14 @@
 				6BD919322EE73232008E130F /* Font+Extensions.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		6BD9193D2EE7955D008E130F /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				6BD9193E2EE79568008E130F /* Router.swift */,
+			);
+			path = Navigation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -426,6 +437,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6BD9193F2EE79568008E130F /* Router.swift in Sources */,
 				6B7E80E42EE5E373005A5925 /* PokemonRepresentable.swift in Sources */,
 				6BD625B92EE5CB58007D57E5 /* PokedexView.swift in Sources */,
 				6BB9FAB32EE60CC1008B7490 /* PokemonViewModel.swift in Sources */,

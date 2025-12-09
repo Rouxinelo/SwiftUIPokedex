@@ -23,7 +23,9 @@ struct PokedexView: View {
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 0) {
                         ForEach(pokemons, id: \.id) { item in
-                            PokedexPokemonView(pokemon: item)
+                            PokedexPokemonView(pokemon: item, onClick: {
+                                goToPokemonDetail(item)
+                            })
                                 .onAppear { loadMoreIfNeeded(currentItem: item) }
                         }
                     }
@@ -72,13 +74,11 @@ private extension PokedexView {
         }
     }
     
-    private func shouldReloadPokemon(currentItem: any PokemonRepresentable) -> Bool {
+    func shouldReloadPokemon(currentItem: any PokemonRepresentable) -> Bool {
         !viewModel.isLoading && currentItem.id == viewModel.pokemons.last?.id
     }
-}
-
-#Preview {
-    let appDependencies = AppDependencies(networkProvider: NetworkProvider())
-    return PokedexView(viewModel: PokedexViewModel(getPokemonListUseCase: appDependencies.getPokemonListUseCase,
-                                                   getPokemonUseCase: appDependencies.getPokemonUseCase))
+    
+    func goToPokemonDetail(_ pokemon: any PokemonRepresentable) {
+        
+    }
 }
