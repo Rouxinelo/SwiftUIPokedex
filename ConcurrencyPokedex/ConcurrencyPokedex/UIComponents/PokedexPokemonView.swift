@@ -13,10 +13,7 @@ struct PokedexPokemonView: View {
     }
     
     var pokemon: any PokemonRepresentable
-    
-    init(pokemon: any PokemonRepresentable) {
-        self.pokemon = pokemon
-    }
+    var onClick: () -> Void
     
     var body: some View {
         VStack {
@@ -63,8 +60,6 @@ struct PokedexPokemonView: View {
                                         getTypeCell(text: secondType)
                                     }
                                 }
-                                .font(.microFootNote)
-                                .fontWeight(.bold)
                             }
                             Spacer()
                         }
@@ -81,6 +76,9 @@ struct PokedexPokemonView: View {
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .shadow(radius: 5)
         .padding(5)
+        .onTapGesture {
+            onClick()
+        }
     }
     
     func getIdString(id: Int) -> String {
@@ -105,6 +103,8 @@ struct PokedexPokemonView: View {
             .background(PokemonType(rawValue: text)?.displayColor ?? .gray)
             .clipShape(Capsule())
             .shadow(radius: 2)
+            .font(.microFootNote)
+            .fontWeight(.bold)
     }
     
     @ViewBuilder
