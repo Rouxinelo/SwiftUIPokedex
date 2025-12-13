@@ -10,10 +10,14 @@ import SwiftUI
 struct NavigationBar: View {
     private var title: String
     private var buttons: [NavigationBarItem]
+    private var isWhiteFont: Bool
+    private var backgroundColor: Color
     
-    init(title: String, buttons: [NavigationBarItem] = []) {
+    init(title: String, buttons: [NavigationBarItem] = [], isWhiteFont: Bool = false, backgroundColor: Color = .white) {
         self.title = title
         self.buttons = buttons
+        self.isWhiteFont = isWhiteFont
+        self.backgroundColor = backgroundColor
     }
     
     var body: some View {
@@ -40,6 +44,8 @@ struct NavigationBar: View {
             }
         }
         .padding(.horizontal)
+        .foregroundStyle(isWhiteFont ? .white : .black)
+        .background(backgroundColor)
     }
 }
 
@@ -52,5 +58,5 @@ struct NavigationBar: View {
                     NavigationBarItem(name: "Favourites", 
                                       image: "heart",
                                       action: {})
-    ])
+                  ], isWhiteFont: true, backgroundColor: .red)
 }

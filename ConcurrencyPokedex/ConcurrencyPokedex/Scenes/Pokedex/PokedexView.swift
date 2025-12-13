@@ -79,6 +79,6 @@ private extension PokedexView {
     }
     
     func goToPokemonDetail(_ pokemon: any PokemonRepresentable) {
-        
+        Router.shared.navigate(to: .pokemonDetail(pokemon))
     }
 }

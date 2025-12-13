@@ -60,8 +60,6 @@ struct PokedexPokemonView: View {
                                         getTypeCell(text: secondType)
                                     }
                                 }
-                                .font(.microFootNote)
-                                .fontWeight(.bold)
                             }
                             Spacer()
                         }
@@ -105,6 +103,8 @@ struct PokedexPokemonView: View {
             .background(PokemonType(rawValue: text)?.displayColor ?? .gray)
             .clipShape(Capsule())
             .shadow(radius: 2)
+            .font(.microFootNote)
+            .fontWeight(.bold)
     }
     
     @ViewBuilder
