@@ -14,16 +14,6 @@ struct PokemonDetailView: View {
     
     var pokemon: any PokemonRepresentable
     
-    var navigationBar: some View {
-        NavigationBar(title: "Detail",
-                      buttons: [NavigationBarItem(name: "Close",
-                                                  image: "xmark
-                                                  ",
-                                                  action: {
-            Router.shared.path.removeLast() })],
-                      isWhiteFont: true,
-                      backgroundColor: getBackgroundColor(pokemon: pokemon))
-    }
     var body: some View {
         VStack(spacing: 0) {
             navigationBar
@@ -69,6 +59,16 @@ struct PokemonDetailView: View {
             }
         }
         .navigationBarBackButtonHidden()
+    }
+    
+    var navigationBar: some View {
+        NavigationBar(title: "Detail",
+                      buttons: [NavigationBarItem(name: "Close",
+                                                  image: "xmark",
+                                                  action: {
+            Router.shared.path.removeLast() })],
+                      isWhiteFont: true,
+                      backgroundColor: getBackgroundColor(pokemon: pokemon))
     }
     
     @ViewBuilder
