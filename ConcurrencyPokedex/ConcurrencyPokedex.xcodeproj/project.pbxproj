@@ -22,6 +22,9 @@
 		6B973F9B2EFF64A400074F87 /* ConcurrencySnapShotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B973F9A2EFF64A400074F87 /* ConcurrencySnapShotTests.swift */; };
 		6B973F9E2EFF65FD00074F87 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 6B973F9D2EFF65FD00074F87 /* SnapshotTesting */; };
 		6B973FA12EFF672E00074F87 /* PokemonRepresentableMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B973FA02EFF672E00074F87 /* PokemonRepresentableMock.swift */; };
+		6B973FA32EFF6D7A00074F87 /* GetPokemonListUseCaseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B973FA22EFF6D7A00074F87 /* GetPokemonListUseCaseMock.swift */; };
+		6B973FA52EFF6DB600074F87 /* PokemonListRepresentableMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B973FA42EFF6DB600074F87 /* PokemonListRepresentableMock.swift */; };
+		6B973FA72EFF6E7900074F87 /* GetPokemonUseCaseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B973FA62EFF6E7900074F87 /* GetPokemonUseCaseMock.swift */; };
 		6BA877242EFF38B2001A82A8 /* ImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BA877232EFF38B2001A82A8 /* ImageButton.swift */; };
 		6BB9FAB32EE60CC1008B7490 /* PokemonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB9FAB22EE60CC1008B7490 /* PokemonViewModel.swift */; };
 		6BB9FAB62EE61A57008B7490 /* AppDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB9FAB52EE61A57008B7490 /* AppDependencies.swift */; };
@@ -75,6 +78,9 @@
 		6B973F982EFF589700074F87 /* PokemonStat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonStat.swift; sourceTree = "<group>"; };
 		6B973F9A2EFF64A400074F87 /* ConcurrencySnapShotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcurrencySnapShotTests.swift; sourceTree = "<group>"; };
 		6B973FA02EFF672E00074F87 /* PokemonRepresentableMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonRepresentableMock.swift; sourceTree = "<group>"; };
+		6B973FA22EFF6D7A00074F87 /* GetPokemonListUseCaseMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPokemonListUseCaseMock.swift; sourceTree = "<group>"; };
+		6B973FA42EFF6DB600074F87 /* PokemonListRepresentableMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonListRepresentableMock.swift; sourceTree = "<group>"; };
+		6B973FA62EFF6E7900074F87 /* GetPokemonUseCaseMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPokemonUseCaseMock.swift; sourceTree = "<group>"; };
 		6BA877232EFF38B2001A82A8 /* ImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageButton.swift; sourceTree = "<group>"; };
 		6BB9FAB22EE60CC1008B7490 /* PokemonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonViewModel.swift; sourceTree = "<group>"; };
 		6BB9FAB52EE61A57008B7490 /* AppDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDependencies.swift; sourceTree = "<group>"; };
@@ -201,6 +207,9 @@
 			isa = PBXGroup;
 			children = (
 				6B973FA02EFF672E00074F87 /* PokemonRepresentableMock.swift */,
+				6B973FA22EFF6D7A00074F87 /* GetPokemonListUseCaseMock.swift */,
+				6B973FA42EFF6DB600074F87 /* PokemonListRepresentableMock.swift */,
+				6B973FA62EFF6E7900074F87 /* GetPokemonUseCaseMock.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -514,7 +523,10 @@
 			files = (
 				6B973FA12EFF672E00074F87 /* PokemonRepresentableMock.swift in Sources */,
 				6BD625C82EE5CB59007D57E5 /* ConcurrencyPokedexTests.swift in Sources */,
+				6B973FA32EFF6D7A00074F87 /* GetPokemonListUseCaseMock.swift in Sources */,
 				6B973F9B2EFF64A400074F87 /* ConcurrencySnapShotTests.swift in Sources */,
+				6B973FA72EFF6E7900074F87 /* GetPokemonUseCaseMock.swift in Sources */,
+				6B973FA52EFF6DB600074F87 /* PokemonListRepresentableMock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

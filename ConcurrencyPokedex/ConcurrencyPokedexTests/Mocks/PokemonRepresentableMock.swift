@@ -17,9 +17,9 @@ struct PokemonRepresentableMock: PokemonRepresentable {
     var abilities = [PokemonAbilityRepresentableMock]()
     var forms = [NamedAPIResourceRepresentableMock]()
     var stats = [PokemonStatRepresentableMock()]
-    var types = [PokemonTypeRepresentableMock]()
+    var types = [PokemonTypeRepresentableMock()]
+    var moves = [PokemonMoveRepresentableMock()]
     var sprites = PokemonSpritesRepresentableMock()
-    var moves = [PokemonMoveRepresentableMock]()
 }
 
 struct PokemonAbilityRepresentableMock: PokemonAbilityRepresentable {
