@@ -13,6 +13,7 @@ struct PokemonDetailView: View {
     }
     
     var pokemon: any PokemonRepresentable
+    var isFavorite: Bool
     
     var body: some View {
         VStack(spacing: 0) {
@@ -31,36 +32,78 @@ struct PokemonDetailView: View {
                         getTypeCell(text: secondType)
                     }
                 }
-                ZStack {
-                    AsyncImage(url: URL(string: pokemon.sprites.frontDefault ?? "")) { phase in
-                        switch phase {
-                        case .empty, .failure(_):
-                            getPlaceholderPokeball()
-                        case .success(let image):
-                            image
-                                .resizable()
-                                .scaledToFit()
-                                .containerRelativeFrame(.horizontal)
-                        @unknown default:
-                            getPlaceholderPokeball()
-                        }
+                AsyncImage(url: URL(string: pokemon.sprites.frontDefault ?? "")) { phase in
+                    switch phase {
+                    case .empty, .failure(_):
+                        getPlaceholderPokeball()
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .scaledToFit()
+                            .containerRelativeFrame(.horizontal)
+                    @unknown default:
+                        getPlaceholderPokeball()
                     }
                 }
             }
             .padding(.top)
             .frame(maxWidth: .infinity)
             .frame(height: 250)
-            .background(PokemonType(rawValue: pokemon.types.first?.type.name ?? "")?.displayColor ?? .secondary)
             
             VStack {
-                Text("example2")
-                    .padding()
-                    .frame(maxHeight: .infinity)
+                VStack(spacing: 10) {
+                    Text("Stats")
+                        .font(.headline)
+                    HStack(spacing: 20) {
+                        getPokemonDimension(image: "ruler",
+                                            statText: getFormattedHeight(height: pokemon.height))
+                        getPokemonDimension(image: "scalemass",
+                                            statText: getFormattedWeight(weight: pokemon.weight))
+                    }
+                    .font(.subheadline)
+                }
+                .padding()
+                
+                VStack {
+                    StatBar(statName: "HP", statColor: .red, statValue: getStatValue(desiredStat: .hp), statMax: PokemonStat.hp.maxValue)
+                    StatBar(statName: "ATK", statColor: .orange, statValue: getStatValue(desiredStat: .attack), statMax: PokemonStat.attack.maxValue)
+                    StatBar(statName: "DEF", statColor: .blue, statValue: getStatValue(desiredStat: .defense), statMax: PokemonStat.defense.maxValue)
+                    StatBar(statName: "SATK", statColor: .purple, statValue: getStatValue(desiredStat: .specialAttack), statMax: PokemonStat.specialAttack.maxValue)
+                    StatBar(statName: "SDEF", statColor: .green, statValue: getStatValue(desiredStat: .specialDefense), statMax: PokemonStat.specialDefense.maxValue)
+                    StatBar(statName: "SPD", statColor: .yellow, statValue: getStatValue(desiredStat: .speed), statMax: PokemonStat.speed.maxValue)
+                }
+                
+                VStack {
+                    Text("Status")
+                        .font(.headline)
+                    Text(isFavorite ? "Captured on 23 December 2024" : "Not captured")
+                }
+                .padding()
+                VStack {
+                    Spacer()
+                    ImageButton(imageName: "pokeball",
+                                text: "Capture",
+                                backgroundColor: backgroundColor,
+                                onClick: {})
+                }
+                .padding(.bottom, 20)
+                
+                Spacer()
             }
+            .frame(maxWidth: .infinity)
+            .background(.white)
+            .clipShape(.rect(topLeadingRadius: 20,
+                             topTrailingRadius: 20,
+                             style: .continuous))
+            .shadow(radius: 5)
         }
+        .background(backgroundColor)
         .navigationBarBackButtonHidden()
+        .ignoresSafeArea(edges: .bottom)
     }
-    
+}
+
+private extension PokemonDetailView {
     var navigationBar: some View {
         NavigationBar(title: "Detail",
                       buttons: [NavigationBarItem(name: "Close",
@@ -68,7 +111,13 @@ struct PokemonDetailView: View {
                                                   action: {
             Router.shared.path.removeLast() })],
                       isWhiteFont: true,
-                      backgroundColor: getBackgroundColor(pokemon: pokemon))
+                      backgroundColor: .clear)
+    }
+    
+    var backgroundColor: Color {
+        guard let firstType = pokemon.types.first?.type.name,
+              let type = PokemonType(rawValue: firstType) else { return .gray }
+        return type.displayColor
     }
     
     @ViewBuilder
@@ -85,22 +134,46 @@ struct PokemonDetailView: View {
             .foregroundStyle(.white)
     }
     
-    func getBackgroundColor(pokemon: any PokemonRepresentable) -> Color {
-        guard let firstType = pokemon.types.first?.type.name,
-              let type = PokemonType(rawValue: firstType) else { return .gray }
-        return type.displayColor
-    }
-    
     @ViewBuilder
     func getPlaceholderPokeball() -> some View {
         Image(Constants.placeholder)
             .resizable()
             .scaledToFit()
             .frame(width: 50, height: 70)
+            .containerRelativeFrame(.horizontal)
+    }
+    
+    @ViewBuilder
+    func getPokemonDimension(image: String, statText: String) -> some View {
+        HStack(spacing: 0) {
+            Image(systemName: image)
+            Text(statText)
+        }
     }
     
     func getIdString(id: Int) -> String {
         String(format: "#%03d", id)
+    }
+    
+    func getFormattedHeight(height: Int) -> String {
+        "\(getFormattedResult(value: Double(height) / 10.0)) m"
+    }
+    
+    func getFormattedWeight(weight: Int) -> String {
+        "\(getFormattedResult(value: Double(weight) / 10.0)) kg"
+    }
+    
+    func getFormattedResult(value: Double) -> String {
+        let formatter = NumberFormatter()
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = 2
+        formatter.decimalSeparator = "."
+        return formatter.string(from: NSNumber(value: value)) ?? "\(value)"
+    }
+    
+    func getStatValue(desiredStat: PokemonStat) -> CGFloat {
+        guard let stat = pokemon.stats.first(where: { $0.stat.name == desiredStat.rawValue }) else { return 0 }
+        return CGFloat(stat.baseStat)
     }
 }
 
@@ -119,5 +192,6 @@ struct PokemonDetailView: View {
                                                                      backDefault: "",
                                                                      frontShiny: "",
                                                                      backShiny: ""),
-                                          moves: []))
+                                          moves: []),
+                      isFavorite: false)
 }

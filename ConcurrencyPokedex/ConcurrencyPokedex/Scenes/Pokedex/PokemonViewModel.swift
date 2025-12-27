@@ -54,13 +54,15 @@ class PokedexViewModel: ObservableObject {
                 shouldLoadNextPage = pokemonList.next != nil
             }
         } catch {
-            
+            // TODO: - Error Handling must be done here
         }
         isLoading = false
         isFirstLoading = false
     }
     
-    func didTapSearch() {}
+    func didTapSearch() {
+        // TODO: - Add search funcionality here
+    }
     
     func switchScreenType() {
         switch screenType {

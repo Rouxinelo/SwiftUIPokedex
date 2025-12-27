@@ -20,7 +20,7 @@ struct ConcurrencyPokedexApp: App {
                 .navigationDestination(for: Route.self) { route in
                     switch route {
                     case .pokemonDetail(let pokemon):
-                        PokemonDetailView(pokemon: pokemon)
+                        PokemonDetailView(pokemon: pokemon, isFavorite: false)
                     }
                 }
             }
