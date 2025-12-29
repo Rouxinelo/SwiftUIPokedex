@@ -8,8 +8,8 @@
 import Foundation
 
 protocol PokemonDataSourceProtocol {
-    func getPokemonList(limit: Int, offset: Int) async throws -> PokemonListDTO
-    func getPokemon(id: String) async throws -> PokemonDTO
+    func getPokemonList(limit: Int, offset: Int) async throws -> any PokemonListRepresentable
+    func getPokemon(id: String) async throws -> any PokemonRepresentable
 }
 
 class PokemonDataSource: PokemonDataSourceProtocol {
@@ -21,8 +21,8 @@ class PokemonDataSource: PokemonDataSourceProtocol {
         self.network = network
     }
     
-    func getPokemonList(limit: Int, offset: Int) async throws -> PokemonListDTO {
-        guard let url = URL(string: "\(pokemonEndpoint)?limit=\(limit)&offset=\(offset)") else { 
+    func getPokemonList(limit: Int, offset: Int) async throws -> any PokemonListRepresentable {
+        guard let url = URL(string: "\(pokemonEndpoint)?limit=\(limit)&offset=\(offset)") else {
             throw NetworkingError.invalidURL
         }
         var request = URLRequest(url: url)
@@ -32,7 +32,7 @@ class PokemonDataSource: PokemonDataSourceProtocol {
         return try JSONDecoder().decode(PokemonListDTO.self, from: data)
     }
     
-    func getPokemon(id: String) async throws -> PokemonDTO {
+    func getPokemon(id: String) async throws -> any PokemonRepresentable {
         guard let url = URL(string: "\(pokemonEndpoint)/\(id)") else {
             throw NetworkingError.invalidURL
         }

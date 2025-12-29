@@ -10,6 +10,6 @@ import Foundation
 
 struct GetPokemonListUseCaseMock: GetPokemonListUseCaseProtocol {
     func perform(limit: Int, offset: Int) async throws -> any PokemonListRepresentable {
-        PokemonListRepresentableMock()
+        PokemonListRepresentableMock(results: Array(repeating: PokemonEntryRepresentableMock(), count: limit))
     }
 }
