@@ -12,8 +12,15 @@ struct PokemonDetailView: View {
         static let placeholder = "pokeball"
     }
     
+    @StateObject var viewModel: PokemonDetailViewModel
     var pokemon: any PokemonRepresentable
     var isFavorite: Bool
+    
+    init(viewModel: PokemonDetailViewModel, pokemon: any PokemonRepresentable, isFavorite: Bool) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+        self.pokemon = pokemon
+        self.isFavorite = isFavorite
+    }
     
     var body: some View {
         VStack(spacing: 0) {
@@ -178,7 +185,8 @@ private extension PokemonDetailView {
 }
 
 #Preview {
-    PokemonDetailView(pokemon: PokemonDTO(id: 1,
+    PokemonDetailView(viewModel: PokemonDetailViewModel(),
+                      pokemon: PokemonDTO(id: 1,
                                           name: "bulbasaur",
                                           height: 10, weight: 10,
                                           baseExperience: 0,

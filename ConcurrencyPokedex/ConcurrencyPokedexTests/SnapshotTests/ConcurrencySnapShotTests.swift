@@ -18,7 +18,7 @@ final class ConcurrencySnapShotTests: XCTestCase {
     }
     
     @MainActor func testPokemonDetailView() throws {
-        let view = PokemonDetailView(pokemon: PokemonRepresentableMock(), isFavorite: false)
+        let view = PokemonDetailView(viewModel: PokemonDetailViewModel(), pokemon: PokemonRepresentableMock(), isFavorite: false)
         assertSnapshot(of: view, as: .image(layout: .device(config: .iPhone13)), record: recordMode)
     }
     
