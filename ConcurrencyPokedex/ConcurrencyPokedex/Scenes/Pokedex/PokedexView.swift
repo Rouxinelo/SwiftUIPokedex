@@ -10,7 +10,7 @@ import SwiftUI
 struct PokedexView: View {
     @StateObject var viewModel: PokedexViewModel
     
-    let columns = [ GridItem(.flexible()), GridItem(.flexible())]
+    let columns = [GridItem(.flexible()), GridItem(.flexible())]
     
     init(viewModel: PokedexViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel)

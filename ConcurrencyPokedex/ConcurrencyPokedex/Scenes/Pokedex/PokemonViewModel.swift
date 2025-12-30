@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 enum PokedexScreenType {
     case allPokemon
@@ -14,6 +15,9 @@ enum PokedexScreenType {
 
 @MainActor
 class PokedexViewModel: ObservableObject {
+    @Environment(\.managedObjectContext)
+    private var viewContext
+    
     @Published var screenType: PokedexScreenType = .allPokemon
     @Published var isFirstLoading = true
     @Published var isLoading = false

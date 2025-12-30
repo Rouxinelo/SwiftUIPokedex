@@ -10,6 +10,8 @@ import SwiftUI
 @main
 struct ConcurrencyPokedexApp: App {
     @StateObject private var router = Router.shared
+    private var persistenceController = PersistenceController.shared
+    
     var appDependencies = AppDependencies(networkProvider: NetworkProvider())
     
     var body: some Scene {
@@ -20,10 +22,14 @@ struct ConcurrencyPokedexApp: App {
                 .navigationDestination(for: Route.self) { route in
                     switch route {
                     case .pokemonDetail(let pokemon):
-                        PokemonDetailView(pokemon: pokemon, isFavorite: false)
+                        PokemonDetailView(viewModel: PokemonDetailViewModel(),
+                                          pokemon: pokemon,
+                                          isFavorite: false)
                     }
                 }
             }
+            .environment(\.managedObjectContext,
+                          persistenceController.container.viewContext)
         }
     }
 }
