@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ImageButton: View {
-    var imageName: String
+    var imageName: String?
     var text: String
     var backgroundColor: Color
     var onClick: () -> Void
@@ -17,9 +17,11 @@ struct ImageButton: View {
         ZStack {
             backgroundColor
             HStack(spacing: 10) {
-                Image(imageName)
-                    .resizable()
-                    .frame(width: 20, height: 20)
+                if let imageName = imageName {
+                    Image(imageName)
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                }
                 Text(text)
                     .foregroundStyle(.white)
                     .font(.headline)
