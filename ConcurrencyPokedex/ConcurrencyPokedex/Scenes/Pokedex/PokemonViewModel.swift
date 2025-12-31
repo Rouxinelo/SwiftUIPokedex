@@ -29,6 +29,7 @@ class PokedexViewModel: ObservableObject {
     private var shouldLoadNextPage = true
     private var getPokemonListUseCase: GetPokemonListUseCaseProtocol
     private var getPokemonUseCase: GetPokemonUseCaseProtocol
+    private var healthKitManager = PokemonHealthKitManager(userDefaults: .standard)
     
     init(getPokemonListUseCase: GetPokemonListUseCaseProtocol, getPokemonUseCase: GetPokemonUseCaseProtocol) {
         self.getPokemonListUseCase = getPokemonListUseCase
@@ -64,6 +65,12 @@ class PokedexViewModel: ObservableObject {
         isFirstLoading = false
     }
     
+    func requestHealthPermissionsAuthorization() {
+        healthKitManager.requestHealthPermissionsAuthorization(completion: { [weak self] hasPermissions, _ in
+            self?.handleHealthPermissionsAuthorization(hasPermissions)
+        })
+    }
+    
     func didTapSearch() {
         // TODO: - Add search funcionality here
     }
@@ -75,5 +82,12 @@ class PokedexViewModel: ObservableObject {
         case .favorite:
             screenType = .allPokemon
         }
+    }
+}
+
+private extension PokedexViewModel {
+    func handleHealthPermissionsAuthorization(_ hasPermissions: Bool) {
+        guard healthKitManager.shouldUpdatePokeballStatus() else { return }
+        healthKitManager.storeLastAccessDate()
     }
 }

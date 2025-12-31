@@ -34,7 +34,7 @@ struct PokedexView: View {
                 }
             }
             .task { await viewModel.fetchPokemon() }
-            
+            .onAppear { viewModel.requestHealthPermissionsAuthorization() }
             if viewModel.isFirstLoading { FullScreenLoadingView() }
         }
     }
