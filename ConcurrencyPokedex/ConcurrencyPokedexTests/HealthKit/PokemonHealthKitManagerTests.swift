@@ -14,10 +14,6 @@ final class PokemonHealthKitManagerTests: XCTestCase {
     override func tearDownWithError() throws {
         userDefaults?.removePersistentDomain(forName: "pokemon.healthKit.tests")
     }
-    
-    override func setUpWithError() throws {
-        userDefaults = UserDefaults(suiteName: "pokemon.healthKit.tests")
-    }
 
     func test_getPokeballsPerDay_whenMultipleValuesAreCalled() throws {
         let sut = PokemonHealthKitManager(userDefaults: userDefaults)
