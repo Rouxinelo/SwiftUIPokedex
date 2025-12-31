@@ -82,6 +82,7 @@
 		6B11280D2F0368AF00E21FC7 /* PokemonDatabaseManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonDatabaseManagerTests.swift; sourceTree = "<group>"; };
 		6B1128102F03FA7500E21FC7 /* PersistanceControllerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistanceControllerMock.swift; sourceTree = "<group>"; };
 		6B12AE722EE8C674004121F6 /* PokemonDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonDetailView.swift; sourceTree = "<group>"; };
+		6B3DAA892F054FB900BFC036 /* ConcurrencyPokedex.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ConcurrencyPokedex.entitlements; sourceTree = "<group>"; };
 		6B5351062EFF23D300CC27F4 /* StatBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatBar.swift; sourceTree = "<group>"; };
 		6B7E80D02EE5CF21005A5925 /* PokemonDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonDataSource.swift; sourceTree = "<group>"; };
 		6B7E80D32EE5CFA8005A5925 /* PokemonListDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonListDTO.swift; sourceTree = "<group>"; };
@@ -366,6 +367,7 @@
 		6BD625B52EE5CB58007D57E5 /* ConcurrencyPokedex */ = {
 			isa = PBXGroup;
 			children = (
+				6B3DAA892F054FB900BFC036 /* ConcurrencyPokedex.entitlements */,
 				6B1128022F03219100E21FC7 /* CoreData */,
 				6BD9193D2EE7955D008E130F /* Navigation */,
 				6BD919312EE73224008E130F /* Extensions */,
@@ -783,6 +785,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ConcurrencyPokedex/ConcurrencyPokedex.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ConcurrencyPokedex/Preview Content\"";
@@ -812,6 +815,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ConcurrencyPokedex/ConcurrencyPokedex.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ConcurrencyPokedex/Preview Content\"";
