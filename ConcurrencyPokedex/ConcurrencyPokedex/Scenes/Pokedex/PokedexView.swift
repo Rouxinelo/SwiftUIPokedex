@@ -34,8 +34,13 @@ struct PokedexView: View {
                 }
             }
             .task { await viewModel.fetchPokemon() }
-            .onAppear { viewModel.requestHealthPermissionsAuthorization() }
+            .onAppear { viewModel.onAppear() }
+            
             if viewModel.isFirstLoading { FullScreenLoadingView() }
+            if viewModel.showFirstAccessBottomSheet {
+                FirstAccessBottomSheetView(isShowing: $viewModel.showFirstAccessBottomSheet,
+                                           didCloseBottomSheet: { viewModel.didCloseFirstAccessBottomSheet() })
+            }
         }
     }
 }

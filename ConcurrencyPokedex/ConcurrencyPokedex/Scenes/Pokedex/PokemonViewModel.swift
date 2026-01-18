@@ -20,6 +20,7 @@ class PokedexViewModel: ObservableObject {
     
     @Published var screenType: PokedexScreenType = .allPokemon
     @Published var isFirstLoading = true
+    @Published var showFirstAccessBottomSheet = false
     @Published var isLoading = false
     @Published var pokemons = [any PokemonRepresentable]()
     @Published var favoritePokemons = [any PokemonRepresentable]()
@@ -65,10 +66,13 @@ class PokedexViewModel: ObservableObject {
         isFirstLoading = false
     }
     
-    func requestHealthPermissionsAuthorization() {
-        healthKitManager.requestHealthPermissionsAuthorization(completion: { [weak self] hasPermissions, _ in
-            self?.handleHealthPermissionsAuthorization(hasPermissions)
-        })
+    func onAppear() {
+        checkIsFirstAccess()
+    }
+    
+    func didCloseFirstAccessBottomSheet() {
+        setDidAlreadyShowBottomSheet()
+        requestHealthPermissionsAuthorization()
     }
     
     func didTapSearch() {
@@ -86,8 +90,26 @@ class PokedexViewModel: ObservableObject {
 }
 
 private extension PokedexViewModel {
+    func checkIsFirstAccess() {
+        if !UserDefaults.standard.bool(forKey: "didAlreadyShowBottomSheet") {
+            showFirstAccessBottomSheet = true
+        } else {
+            requestHealthPermissionsAuthorization()
+        }
+    }
+    
+    func setDidAlreadyShowBottomSheet() {
+        UserDefaults.standard.setValue(true, forKey: "didAlreadyShowBottomSheet")
+    }
+    
     func handleHealthPermissionsAuthorization(_ hasPermissions: Bool) {
         guard healthKitManager.shouldUpdatePokeballStatus() else { return }
         healthKitManager.storeLastAccessDate()
+    }
+    
+    func requestHealthPermissionsAuthorization() {
+        healthKitManager.requestHealthPermissionsAuthorization(completion: { [weak self] hasPermissions, _ in
+            self?.handleHealthPermissionsAuthorization(hasPermissions)
+        })
     }
 }
