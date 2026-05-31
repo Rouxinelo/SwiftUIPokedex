@@ -1,26 +1,37 @@
-# This workflow will build a Swift project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-swift
-
-name: Swift
+name: Build
 
 on:
   push:
-    branches: [ "develop" ]
-  pull_request:
-    branches: [ "develop" ]
+    branches: [ main, develop ]
+  pull_request: {}
 
 jobs:
   build:
-    runs-on: macos-latest
+    name: Build (simulator)
+    runs-on: macos-14         # Sonoma — has Xcode 15+
 
     steps:
+      # 1. Checkout your code
       - uses: actions/checkout@v4
 
-      - name: Build and Test
-        run: |
-          xcodebuild \
-            -project ConcurrencyPokedex/ConcurrencyPokedex.xcodeproj \
-            -scheme ConcurrencyPokedex \
-            -destination 'platform=iOS Simulator,name=iPhone 16,OS=26.2' \
-            clean test
+      # 2. Select the Xcode version you need
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_16.app
 
+      # 3. (Optional) Cache SPM packages
+      - name: Cache SPM
+        uses: actions/cache@v4
+        with:
+          path: .build
+          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-spm-
+
+      # 4. Build for simulator (no signing needed)
+      - name: Build
+        run: |
+          xcodebuild build \
+            -scheme "YourAppScheme" \
+            -destination "platform=iOS Simulator,name=iPhone 16,OS=latest" \
+            CODE_SIGNING_ALLOWED=NO \
+            | xcpretty
