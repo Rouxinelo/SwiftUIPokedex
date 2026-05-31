@@ -20,7 +20,7 @@ jobs:
       - name: Run Tests
         run: |
           xcodebuild test \
-            -scheme "YourAppScheme" \
+            -scheme "ConcurrencyPokedex" \
             -destination "platform=iOS Simulator,name=iPhone 16,OS=latest" \
             -enableCodeCoverage YES \
             -resultBundlePath TestResults.xcresult \
