@@ -9,9 +9,27 @@ import SwiftUI
 
 @main
 struct ConcurrencyPokedexApp: App {
+    @StateObject private var router = Router.shared
+    private var persistenceController = PersistenceController.shared
+    
+    var appDependencies = AppDependencies(networkProvider: NetworkProvider())
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationStack(path: $router.path) {
+                PokedexView(viewModel: PokedexViewModel(getPokemonListUseCase: appDependencies.getPokemonListUseCase,
+                                                        getPokemonUseCase: appDependencies.getPokemonUseCase))
+                .navigationDestination(for: Route.self) { route in
+                    switch route {
+                    case .pokemonDetail(let pokemon):
+                        PokemonDetailView(viewModel: PokemonDetailViewModel(),
+                                          pokemon: pokemon,
+                                          isFavorite: false)
+                    }
+                }
+            }
+            .environment(\.managedObjectContext,
+                          persistenceController.container.viewContext)
         }
     }
 }
