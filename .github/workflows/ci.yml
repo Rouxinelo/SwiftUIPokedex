@@ -54,12 +54,3 @@ jobs:
             -skip-testing:ConcurrencyPokedexTests/ConcurrencySnapShotTests \
             test
 
-      - name: Upload test results
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: test-results
-          path: |
-            ConcurrencyPokedex/test-results.xml
-            ConcurrencyPokedex/TestResults.xcresult
-
