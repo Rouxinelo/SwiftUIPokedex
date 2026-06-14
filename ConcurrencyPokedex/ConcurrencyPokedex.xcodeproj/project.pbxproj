@@ -1041,7 +1041,7 @@
 			);
 			currentVersion = 6B1128042F0321A700E21FC7 /* PokemonModel.xcdatamodel */;
 			name = PokemonModel.xcdatamodeld;
-			path = ConcurrencyPokedex/CoreData/PokemonModel.xcdatamodeld;
+			path = CoreData/PokemonModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
