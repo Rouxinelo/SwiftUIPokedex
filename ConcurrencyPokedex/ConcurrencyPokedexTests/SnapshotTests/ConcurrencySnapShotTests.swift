@@ -13,7 +13,9 @@ final class ConcurrencySnapShotTests: XCTestCase {
     var recordMode = false
     
     @MainActor func testPokedexView() throws {
-        let view = PokedexView(viewModel: PokedexViewModel(getPokemonListUseCase: GetPokemonListUseCaseMock(), getPokemonUseCase: GetPokemonUseCaseMock()))
+        let view = PokedexView(viewModel: PokedexViewModel(getPokemonListUseCase: GetPokemonListUseCaseMock(),
+                                                           getPokemonUseCase: GetPokemonUseCaseMock(),
+                                                           healthKitManager: PokemonHealthKitManagerMock()))
         assertSnapshot(of: view, as: .image(layout: .device(config: .iPhone13)), record: recordMode)
     }
     

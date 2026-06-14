@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct FirstAccessBottomSheetView: View {
-    @Binding var isShowing: Bool
     @State private var yOffset: CGFloat = 1000
     @State private var rewardScale: CGFloat = 0.9
 
@@ -109,7 +108,6 @@ struct FirstAccessBottomSheetView: View {
         withAnimation(.easeIn(duration: 0.3)) {
             yOffset = 1000
         } completion: {
-            isShowing = false
             didCloseBottomSheet()
         }
     }
@@ -117,7 +115,6 @@ struct FirstAccessBottomSheetView: View {
 
 #Preview {
     FirstAccessBottomSheetView(
-        isShowing: .constant(true),
         didCloseBottomSheet: {}
     )
 }

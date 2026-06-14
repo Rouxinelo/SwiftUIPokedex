@@ -18,7 +18,8 @@ struct ConcurrencyPokedexApp: App {
         WindowGroup {
             NavigationStack(path: $router.path) {
                 PokedexView(viewModel: PokedexViewModel(getPokemonListUseCase: appDependencies.getPokemonListUseCase,
-                                                        getPokemonUseCase: appDependencies.getPokemonUseCase))
+                                                        getPokemonUseCase: appDependencies.getPokemonUseCase,
+                                                        healthKitManager: PokemonHealthKitManager(userDefaults: .standard)))
                 .navigationDestination(for: Route.self) { route in
                     switch route {
                     case .pokemonDetail(let pokemon):
