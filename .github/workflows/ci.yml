@@ -15,7 +15,10 @@ jobs:
 
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode.app
-
+        
+      - name: List files
+        run: ls -la
+  
       - name: Resolve SPM
         run: xcodebuild -resolvePackageDependencies -project ConcurrencyPokedex.xcodeproj
         
