@@ -63,8 +63,3 @@ jobs:
             ConcurrencyPokedex/test-results.xml
             ConcurrencyPokedex/TestResults.xcresult
 
-      - name: Publish Test Results
-        uses: EnricoMi/publish-unit-test-result-action/macos@v2
-        if: always()
-        with:
-          files: ConcurrencyPokedex/test-results.xml
