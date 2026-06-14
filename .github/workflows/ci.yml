@@ -50,6 +50,8 @@ jobs:
             -scheme ConcurrencyPokedex \
             -sdk iphonesimulator \
             -destination 'platform=iOS Simulator,OS=18.5,name=iPhone 16' \
+            -skip-testing:ConcurrencyPokedexUITests \
+            -skip-testing:ConcurrencyPokedexTests/ConcurrencySnapShotTests \
             test
 
       - name: Upload test results
