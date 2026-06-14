@@ -10,7 +10,9 @@ import XCTest
 
 final class PokedexViewModelTests: XCTestCase {
     @MainActor
-    var sut = PokedexViewModel(getPokemonListUseCase: GetPokemonListUseCaseMock(), getPokemonUseCase: GetPokemonUseCaseMock())
+    var sut = PokedexViewModel(getPokemonListUseCase: GetPokemonListUseCaseMock(),
+                               getPokemonUseCase: GetPokemonUseCaseMock(),
+                               healthKitManager: PokemonHealthKitManagerMock())
     
     func test_viewModel_pokemonArrayIsEmptyWhenStarting() async throws {
         let initialPokemon = await sut.pokemons
