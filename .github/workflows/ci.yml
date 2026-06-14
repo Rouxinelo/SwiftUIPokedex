@@ -9,16 +9,16 @@ on:
 jobs:
   build:
     runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: ConcurrencyPokedex
 
     steps:
       - uses: actions/checkout@v4
 
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode.app
-        
-      - name: List files
-        run: ls -la
-  
+
       - name: Resolve SPM
         run: xcodebuild -resolvePackageDependencies -project ConcurrencyPokedex.xcodeproj
         
@@ -34,6 +34,9 @@ jobs:
   test:
     runs-on: macos-latest
     needs: build
+    defaults:
+      run:
+        working-directory: ConcurrencyPokedex
     steps:
       - uses: actions/checkout@v4
       
@@ -55,11 +58,11 @@ jobs:
         with:
           name: test-results
           path: |
-            test-results.xml
-            TestResults.xcresult
+            ConcurrencyPokedex/test-results.xml
+            ConcurrencyPokedex/TestResults.xcresult
 
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action/macos@v2
         if: always()
         with:
-          files: test-results.xml
+          files: ConcurrencyPokedex/test-results.xml
