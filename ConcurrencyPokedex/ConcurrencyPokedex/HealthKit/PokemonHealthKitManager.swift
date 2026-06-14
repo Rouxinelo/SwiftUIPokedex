@@ -12,7 +12,17 @@ enum PokedexUserDataConstants {
     static let appAccessDateKey = "appAccessDate"
 }
 
-class PokemonHealthKitManager {
+protocol PokemonHealthKitManagerProtocol {
+    func requestHealthPermissionsAuthorization(completion: @escaping(Bool, Error?) -> Void)
+    func getTotalNumberOfPokeballs(startDate: Date,
+                                   endDate: Date,
+                                   completion: @escaping(Int) -> Void)
+    func shouldUpdatePokeballStatus() -> Bool
+    func storeLastAccessDate()
+    func getPokeballsPerDay(for stepCount: Double) -> Int
+}
+
+class PokemonHealthKitManager: PokemonHealthKitManagerProtocol {
     let userDefaults: UserDefaults?
     let healthStore = HKHealthStore()
     

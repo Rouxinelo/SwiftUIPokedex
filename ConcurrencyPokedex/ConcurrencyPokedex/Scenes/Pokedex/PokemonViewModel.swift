@@ -13,37 +13,43 @@ enum PokedexScreenType {
     case favorite
 }
 
+enum PokedexScreenState {
+    case fullScreenLoading
+    case loadingNewPage
+    case pokemonsLoaded
+    case firstAccessBottomSheet
+}
+
 @MainActor
 class PokedexViewModel: ObservableObject {
     @Environment(\.managedObjectContext)
     private var viewContext
     
     @Published var screenType: PokedexScreenType = .allPokemon
-    @Published var isFirstLoading = true
-    @Published var showFirstAccessBottomSheet = false
-    @Published var isLoading = false
     @Published var pokemons = [any PokemonRepresentable]()
     @Published var favoritePokemons = [any PokemonRepresentable]()
+    @Published var state: PokedexScreenState = .fullScreenLoading
     
     private var offset = 0
     private var limit = 20
     private var shouldLoadNextPage = true
     private var getPokemonListUseCase: GetPokemonListUseCaseProtocol
     private var getPokemonUseCase: GetPokemonUseCaseProtocol
-    private var healthKitManager = PokemonHealthKitManager(userDefaults: .standard)
+    private var healthKitManager: PokemonHealthKitManagerProtocol
     
-    init(getPokemonListUseCase: GetPokemonListUseCaseProtocol, getPokemonUseCase: GetPokemonUseCaseProtocol) {
+    init(getPokemonListUseCase: GetPokemonListUseCaseProtocol, getPokemonUseCase: GetPokemonUseCaseProtocol, healthKitManager: PokemonHealthKitManagerProtocol) {
         self.getPokemonListUseCase = getPokemonListUseCase
         self.getPokemonUseCase = getPokemonUseCase
+        self.healthKitManager = healthKitManager
     }
     
     func fetchPokemon() async {
-        guard shouldLoadNextPage, (!isLoading || isFirstLoading) else { return }
-        isLoading = !isFirstLoading
+        guard shouldLoadNextPage, state != .loadingNewPage, state != .firstAccessBottomSheet else { return }
+        
+        if state != .fullScreenLoading { state = .loadingNewPage }
         
         do {
             let pokemonList = try await getPokemonListUseCase.perform(limit: limit, offset: offset)
-            shouldLoadNextPage = pokemonList.next != nil
             var pokemonData = [any PokemonRepresentable]()
             
             try await withThrowingTaskGroup(of: (any PokemonRepresentable).self) { [weak self] group in
@@ -58,21 +64,20 @@ class PokedexViewModel: ObservableObject {
                 pokemons.append(contentsOf: pokemonData.sorted { $0.id < $1.id })
                 offset += limit
                 shouldLoadNextPage = pokemonList.next != nil
+                state = .pokemonsLoaded
             }
         } catch {
             // TODO: - Error Handling must be done here
         }
-        isLoading = false
-        isFirstLoading = false
     }
     
-    func onAppear() {
-        checkIsFirstAccess()
+    func onAppear() async {
+        await checkIsFirstAccess()
     }
     
-    func didCloseFirstAccessBottomSheet() {
+    func didCloseFirstAccessBottomSheet() async {
         setDidAlreadyShowBottomSheet()
-        requestHealthPermissionsAuthorization()
+        await requestHealthPermissionsAuthorization()
     }
     
     func didTapSearch() {
@@ -87,14 +92,18 @@ class PokedexViewModel: ObservableObject {
             screenType = .allPokemon
         }
     }
+    
+    func getLastPokemonId() -> Int? {
+        pokemons.last?.id
+    }
 }
 
 private extension PokedexViewModel {
-    func checkIsFirstAccess() {
+    func checkIsFirstAccess() async {
         if !UserDefaults.standard.bool(forKey: "didAlreadyShowBottomSheet") {
-            showFirstAccessBottomSheet = true
+            state = .firstAccessBottomSheet
         } else {
-            requestHealthPermissionsAuthorization()
+            await requestHealthPermissionsAuthorization()
         }
     }
     
@@ -107,9 +116,15 @@ private extension PokedexViewModel {
         healthKitManager.storeLastAccessDate()
     }
     
-    func requestHealthPermissionsAuthorization() {
+    func requestHealthPermissionsAuthorization() async {
+        await performFirstLoading()
         healthKitManager.requestHealthPermissionsAuthorization(completion: { [weak self] hasPermissions, _ in
             self?.handleHealthPermissionsAuthorization(hasPermissions)
         })
+    }
+    
+    func performFirstLoading() async {
+        state = .fullScreenLoading
+        await fetchPokemon()
     }
 }

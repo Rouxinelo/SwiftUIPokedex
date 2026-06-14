@@ -18,30 +18,30 @@ struct PokedexView: View {
     
     var body: some View {
         ZStack {
-            VStack(spacing: 10) {
-                navigationBar
-                ScrollView {
-                    LazyVGrid(columns: columns, spacing: 0) {
-                        ForEach(pokemons, id: \.id) { item in
-                            PokedexPokemonView(pokemon: item, onClick: {
-                                goToPokemonDetail(item)
-                            })
-                                .onAppear { loadMoreIfNeeded(currentItem: item) }
+            switch viewModel.state {
+            case .fullScreenLoading:
+                FullScreenLoadingView()
+            case .pokemonsLoaded, .loadingNewPage:
+                VStack(spacing: 10) {
+                    navigationBar
+                    ScrollView {
+                        LazyVGrid(columns: columns, spacing: 0) {
+                            ForEach(pokemons, id: \.id) { item in
+                                PokedexPokemonView(pokemon: item, onClick: {
+                                    goToPokemonDetail(item)
+                                })
+                                    .onAppear { loadMoreIfNeeded(currentItem: item) }
+                            }
                         }
+                        .padding(10)
+                        if viewModel.state == .loadingNewPage { TableLoadingView() }
                     }
-                    .padding(10)
-                    if viewModel.isLoading { TableLoadingView() }
                 }
-            }
-            .task { await viewModel.fetchPokemon() }
-            .onAppear { viewModel.onAppear() }
-            
-            if viewModel.isFirstLoading { FullScreenLoadingView() }
-            if viewModel.showFirstAccessBottomSheet {
-                FirstAccessBottomSheetView(isShowing: $viewModel.showFirstAccessBottomSheet,
-                                           didCloseBottomSheet: { viewModel.didCloseFirstAccessBottomSheet() })
+            case .firstAccessBottomSheet:
+                FirstAccessBottomSheetView(didCloseBottomSheet: { didCloseFirstAccessBottomSheet() })
             }
         }
+        .task { await viewModel.onAppear() }
     }
 }
 
@@ -80,7 +80,16 @@ private extension PokedexView {
     }
     
     func shouldReloadPokemon(currentItem: any PokemonRepresentable) -> Bool {
-        !viewModel.isLoading && currentItem.id == viewModel.pokemons.last?.id
+        switch viewModel.state {
+        case .loadingNewPage:
+            return false
+        default:
+            return currentItem.id == viewModel.getLastPokemonId()
+        }
+    }
+    
+    func didCloseFirstAccessBottomSheet() {
+        Task { await viewModel.didCloseFirstAccessBottomSheet() }
     }
     
     func goToPokemonDetail(_ pokemon: any PokemonRepresentable) {
