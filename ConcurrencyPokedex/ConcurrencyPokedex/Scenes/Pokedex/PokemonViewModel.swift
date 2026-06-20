@@ -113,7 +113,11 @@ private extension PokedexViewModel {
     
     func handleHealthPermissionsAuthorization(_ hasPermissions: Bool) {
         guard healthKitManager.shouldUpdatePokeballStatus() else { return }
-        healthKitManager.storeLastAccessDate()
+        healthKitManager.getTotalNumberOfPokeballs(startDate: healthKitManager.getLastAccessDate(),
+                                                   endDate: Date(),
+                                                   completion: { [weak self] newPokeballs in
+            self?.healthKitManager.storePokeballs(newPokeballs)
+        })
     }
     
     func requestHealthPermissionsAuthorization() async {

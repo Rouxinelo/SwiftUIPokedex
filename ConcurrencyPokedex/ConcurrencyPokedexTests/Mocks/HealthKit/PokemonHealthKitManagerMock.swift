@@ -9,6 +9,14 @@
 import Foundation
 
 struct PokemonHealthKitManagerMock: PokemonHealthKitManagerProtocol {
+    func storeLastAccessDate(_ date: Date) {}
+    
+    func getLastAccessDate() -> Date { Date() }
+    
+    func getAvailablePokeballs() -> Int { 0 }
+    
+    func storePokeballs(_ newPokeballs: Int) {}
+    
     func requestHealthPermissionsAuthorization(completion: @escaping (Bool, (any Error)?) -> Void) {}
     
     func getTotalNumberOfPokeballs(startDate: Date, endDate: Date, completion: @escaping (Int) -> Void) {}
