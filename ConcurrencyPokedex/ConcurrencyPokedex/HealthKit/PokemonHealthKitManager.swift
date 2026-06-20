@@ -10,6 +10,7 @@ import HealthKit
 
 enum PokedexUserDataConstants {
     static let appAccessDateKey = "appAccessDate"
+    static let currentPokeballsKey = "currentPokeballs"
 }
 
 protocol PokemonHealthKitManagerProtocol {
@@ -18,8 +19,11 @@ protocol PokemonHealthKitManagerProtocol {
                                    endDate: Date,
                                    completion: @escaping(Int) -> Void)
     func shouldUpdatePokeballStatus() -> Bool
-    func storeLastAccessDate()
+    func storeLastAccessDate(_ date: Date)
+    func getLastAccessDate() -> Date
     func getPokeballsPerDay(for stepCount: Double) -> Int
+    func getAvailablePokeballs() -> Int
+    func storePokeballs(_ newPokeballs: Int)
 }
 
 class PokemonHealthKitManager: PokemonHealthKitManagerProtocol {
@@ -36,11 +40,15 @@ class PokemonHealthKitManager: PokemonHealthKitManagerProtocol {
                                          completion: completion)
     }
     
-    func getTotalNumberOfPokeballs(startDate: Date, 
-                                   endDate: Date, 
+    func getTotalNumberOfPokeballs(startDate: Date,
+                                   endDate: Date,
                                    completion: @escaping(Int) -> Void) {
-        guard let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount) else { return }
-
+        guard HKHealthStore.isHealthDataAvailable(),
+              let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount) else {
+            completion(0)
+            return
+        }
+        
         var numberOfPokeballs = 0
         
         let predicate = HKQuery.predicateForSamples(
@@ -48,7 +56,7 @@ class PokemonHealthKitManager: PokemonHealthKitManagerProtocol {
             end: endDate,
             options: .strictStartDate
         )
-
+        
         let calendar = Calendar.current
         let anchorDate = calendar.startOfDay(for: startDate)
         
@@ -61,8 +69,16 @@ class PokemonHealthKitManager: PokemonHealthKitManagerProtocol {
         )
         
         query.initialResultsHandler = { [weak self] _, results, error in
-            guard let self = self, let statsCollection = results else { return }
-
+            guard let self = self, let statsCollection = results else {
+                completion(0)
+                return
+            }
+            
+            if let error = error {
+                completion(0)
+                return
+            }
+            
             statsCollection.enumerateStatistics(from: startDate, to: endDate) { stats, _ in
                 let steps = stats.sumQuantity()?.doubleValue(for: .count()) ?? 0
                 numberOfPokeballs += self.getPokeballsPerDay(for: steps)
@@ -73,12 +89,20 @@ class PokemonHealthKitManager: PokemonHealthKitManagerProtocol {
     }
     
     func shouldUpdatePokeballStatus() -> Bool {
-        guard let lastAccessDate = userDefaults?.value(forKey: PokedexUserDataConstants.appAccessDateKey) as? Date else { return false }
-        return Calendar.current.isDateInToday(lastAccessDate)
+        guard let lastAccessDate = userDefaults?.value(forKey: PokedexUserDataConstants.appAccessDateKey) as? Date else {
+            storeLastAccessDate()
+            return false
+        }
+        return !Calendar.current.isDateInToday(lastAccessDate)
     }
     
-    func storeLastAccessDate() {
-        userDefaults?.setValue(Date(), forKey: PokedexUserDataConstants.appAccessDateKey)
+    func storeLastAccessDate(_ date: Date = Date()) {
+        userDefaults?.setValue(date,
+                               forKey: PokedexUserDataConstants.appAccessDateKey)
+    }
+    
+    func getLastAccessDate() -> Date {
+        userDefaults?.value(forKey: PokedexUserDataConstants.appAccessDateKey) as? Date ?? Date()
     }
     
     func getPokeballsPerDay(for stepCount: Double) -> Int {
@@ -92,5 +116,15 @@ class PokemonHealthKitManager: PokemonHealthKitManagerProtocol {
         default:
             return 3
         }
+    }
+    
+    func getAvailablePokeballs() -> Int {
+        userDefaults?.integer(forKey: PokedexUserDataConstants.currentPokeballsKey) ?? 0
+    }
+    
+    func storePokeballs(_ newPokeballs: Int) {
+        let pokeballsToStore = newPokeballs + getAvailablePokeballs()
+        userDefaults?.set(pokeballsToStore,
+                          forKey: PokedexUserDataConstants.currentPokeballsKey)
     }
 }
